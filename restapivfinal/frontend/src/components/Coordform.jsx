@@ -3,6 +3,8 @@ import {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {createCoord} from '../features/coord/coordSlice'
 import { createTime } from '../features/Timeauth/timeSlice'
+import { updatetheTime } from '../features/Timeauth/timeSlice'
+import { updateCoord } from '../features/coord/coordSlice'
 import { useGeolocation } from "rooks";
 import Time from './Time';
 import { Promise } from 'mongoose';
@@ -16,8 +18,8 @@ const googleMapScript = document.createElement('script')
 function Coordform() {
   const [when, setWhen] = useState(false);
   
-  let someshit = 0
-  
+  sessionStorage.clickcount = 0
+
   const dispatch = useDispatch()
 
   const geoObj = useGeolocation({
@@ -34,14 +36,26 @@ function Coordform() {
     >
       <button
         onClick={() => {
-          if(geoObj != null && someshit < 1)
+          if(geoObj != null)
           {
             const templng = geoObj.lng
             const templat = geoObj.lat
-            someshit++
-            dispatch(createCoord({geoObj}))
+            if(sessionStorage.clickcount == 1)
+            {
+              console.log({message:'i am creating'})
+              sessionStorage.clickcount = Number(sessionStorage.clickcount)+1;
+              dispatch(createCoord({geoObj}))
+              
+
+            }
+            else
+            {
+              console.log({message:'i am updating'})
+              dispatch(updateCoord({geoObj}))
+              sessionStorage.clickcount = Number(sessionStorage.clickcount)+1;
+            }
             
-            
+        
             const service = new google.maps.DistanceMatrixService();
             const geocoder = new google.maps.Geocoder();
             // build request
@@ -60,7 +74,18 @@ function Coordform() {
             service.getDistanceMatrix(request).then((response) => {
               // put response
               const temp1 = response.rows[0].elements[0].duration
-              dispatch(createTime({temp1}))
+              if(sessionStorage.clickcount == 0)
+              {
+                console.log({message:'i am creating time'})
+                dispatch(createTime({temp1}))
+              }
+              else
+              {
+                console.log(Number(sessionStorage.clickcount))
+                console.log({message:'i am updating time'})
+                dispatch(updatetheTime({temp1}))
+              }
+              
             
               
               // document.getElementById("response").innerText = JSON.stringify(
@@ -69,8 +94,7 @@ function Coordform() {
               //   2
               // );
             })
-         
-    
+            
                       
 
           };

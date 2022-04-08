@@ -18,14 +18,21 @@ const createTime = async (timeData,token) => {
 
 
 //update time
-// const updateCoord = async(id,timeData) => {
-//     const response = await axios.put(API_URL+id,timeData)
+const updateTimeToNew = async(id,timeData,token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  const response = await axios.put(API_URL+id,timeData,config)
 
-//     return response.data
-// }
-
-
-const coordService = {
-    createTime
+  return response.data
 }
-export default coordService
+
+
+const timeService = {
+    createTime,
+    updateTimeToNew,
+
+}
+export default timeService

@@ -16,14 +16,20 @@ const createCoord = async (coordData,token) => {
 
 
 //update coordinates
-const updateCoord = async(id,coordData) => {
-    const response = await axios.put(API_URL+id,coordData)
+const updateCoord = async(id,coordData,token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    }
+    const response = await axios.put(API_URL+id,coordData,config)
 
     return response.data
 }
 
 
 const coordService = {
-    createCoord
+    createCoord,
+    updateCoord,
 }
 export default coordService

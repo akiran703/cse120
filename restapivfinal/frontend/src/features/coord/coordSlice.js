@@ -32,7 +32,8 @@ export const createCoord = createAsyncThunk('coord/create',async(coordData,thunk
 //update old coordinates
 export const updateCoord = createAsyncThunk('coord/update',async(id,coordData,thunkAPI) => {
     try{
-        return await coordService.createCoord(id,coordData)
+        const token = thunkAPI.getState().auth.user.token
+        return await coordService.updateCoord(id,coordData,token)
     }
     catch(error)
     {
@@ -80,7 +81,7 @@ export const coordSlice = createSlice({
         .addCase(updateCoord.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
-            state.message(action.payload)
+            state.message = action.payload
         })
     }
 })
