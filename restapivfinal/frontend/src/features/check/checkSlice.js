@@ -1,19 +1,21 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit"
-import timeService from './timeService'
+import checkService from './checkService'
+
+// const drivers = JSON.parse(localStorage.getItem('drivers'))
+
 
 const initialState = {
-    time: [],
+    drivers: [],
     isError:false,
     isSuccess:false,
     isLoading:false,
     message:''
-
 }
-//create new time info
-export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI) => {
+
+export const createDriver = createAsyncThunk('driver/create',async(driverData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.createTime(timeData,token)
+        return await checkService.createDriver(driverData,token)
     }
     catch(error)
     {
@@ -28,11 +30,10 @@ export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI
     }
 })
 
-//get coordinates
-export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
+export const updateDriver = createAsyncThunk('driver/update',async(id,driverData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.getTime(token)
+        return await checkService.updateDriver(id,driverData,token)    
     }
     catch(error)
     {
@@ -47,12 +48,10 @@ export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
     }
 })
 
-
-//update old time
-export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,thunkAPI) => {
+export const getDrivers = createAsyncThunk('driver/get',async(_,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.updateTimeToNew(id,timeData,token)
+        return await checkService.getDrivers(token)
     }
     catch(error)
     {
@@ -66,92 +65,86 @@ export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,th
 
     }
 })
-
-
-//delete time 
-export const deleteTime = createAsyncThunk('time/delete',async(id,thunkAPI) => {
-    try{
+export const deleteDriver = createAsyncThunk(
+    'driver/delete',
+    async (id, thunkAPI) => {
+      try {
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.deleteTimee(id,token)
-    }
-    catch(error)
-    {
+        return await checkService.deleteDriver(id, token)
+      } catch (error) {
         const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString()
+        return thunkAPI.rejectWithValue(message)
+      }
     }
-})
-
-
-
-export const timeSlice = createSlice({
-    name: 'time',
+  )
+export const checkSlice = createSlice({
+    name: 'driver',
     initialState,
     reducers:{
         reset:(state) => initialState
     },
     extraReducers:(Builder) =>{
         Builder
-        .addCase(createTime.pending,(state)=>{
+        .addCase(createDriver.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(createTime.fulfilled,(state,action)=>{
+        .addCase(createDriver.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time.push(action.payload)
+            state.drivers.push(action.payload)
         })
-        .addCase(createTime.rejected,(state,action)=>{
+        .addCase(createDriver.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message(action.payload)
         })
-        .addCase(updatetheTime.pending,(state)=>{
+        .addCase(updateDriver.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(updatetheTime.fulfilled,(state,action)=>{
+        .addCase(updateDriver.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload.id
+            state.drivers.push(action.payload)
         })
-        .addCase(updatetheTime.rejected,(state,action)=>{
+        .addCase(updateDriver.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(getTime.pending,(state)=>{
+        .addCase(getDrivers.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(getTime.fulfilled,(state,action)=>{
+        .addCase(getDrivers.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload
+            state.drivers = action.payload
         })
-        .addCase(getTime.rejected,(state,action)=>{
+        .addCase(getDrivers.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(deleteTime.pending, (state) => {
+        .addCase(deleteDriver.pending, (state) => {
             state.isLoading = true
-            })
-        .addCase(deleteTime.fulfilled, (state, action) => {
+        })
+        .addCase(deleteDriver.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.time = state.time.filter(
-              (time) => time._id !== action.payload.id
-            )
-            })
-        .addCase(deleteTime.rejected, (state, action) => {
+            state.drivers = state.drivers.filter(
+                (drive) => drive._id !== action.payload.id
+        )
+        })
+        .addCase(deleteDriver.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
-            })
+        })
     }
 })
-export const {reset} = timeSlice.actions
-export default timeSlice.reducer
+export const {reset} = checkSlice.actions
+export default checkSlice.reducer

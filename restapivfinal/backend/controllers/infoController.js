@@ -58,7 +58,11 @@ const updateInfo =  asyncHandler(async (req,res) => {
 //@route delete /api/goals/id
 // @access Private
 const deleteInfo = asyncHandler (async(req,res) => {
-    res.status(200).json({message: `delete Info ${req.params.id}`})
+    const locations = await Location.findById(req.params.id)
+    await locations.remove()
+    res.status(200).json({ id: req.params.id })
+
+
 })
 
 module.exports = {

@@ -13,3 +13,4 @@ router.route('/:id').delete(protect,deleteInfo).put(protect,updateInfo)
 
 
 module.exports = router
+

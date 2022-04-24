@@ -54,8 +54,15 @@ const updateTime =  asyncHandler(async (req,res) => {
     res.status(200).json(updatetime)
 })
 
+//delete time
+const deleteTime = asyncHandler (async(req,res) => {
+    const timv = await Time.findById(req.params.id)
+    await timv.remove()
+    res.status(200).json({ id: req.params.id })
+})
+
 
 
 module.exports = {
-    getTime,setTime ,updateTime,
+    getTime,setTime ,updateTime,deleteTime,
 }

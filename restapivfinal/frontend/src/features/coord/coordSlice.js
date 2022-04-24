@@ -28,6 +28,25 @@ export const createCoord = createAsyncThunk('coord/create',async(coordData,thunk
     }
 })
 
+//get coordinates
+export const getCoord = createAsyncThunk('coord/get',async(_,thunkAPI) => {
+    try{
+        const token = thunkAPI.getState().auth.user.token
+        return await coordService.getCoord(token)
+    }
+    catch(error)
+    {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+
+    }
+})
+
 
 //update old coordinates
 export const updateCoord = createAsyncThunk('coord/update',async(id,coordData,thunkAPI) => {
@@ -47,6 +66,29 @@ export const updateCoord = createAsyncThunk('coord/update',async(id,coordData,th
 
     }
 })
+
+
+
+
+//delete coordinates
+export const deleteCoord = createAsyncThunk('coord/delete',async(id,thunkAPI) => {
+    try{
+        const token = thunkAPI.getState().auth.user.token
+        return await coordService.deletecoordinates(id,token)
+    }
+    catch(error)
+    {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+
+    }
+})
+
 
 
 export const coordSlice = createSlice({
@@ -82,6 +124,34 @@ export const coordSlice = createSlice({
             state.isLoading = false
             state.isError = true
             state.message = action.payload
+        })
+        .addCase(getCoord.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(getCoord.fulfilled,(state,action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.locations = action.payload
+        })
+        .addCase(getCoord.rejected,(state,action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+        .addCase(deleteCoord.pending, (state) => {
+        state.isLoading = true
+        })
+        .addCase(deleteCoord.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.locations = state.locations.filter(
+          (location) => location._id !== action.payload.id
+        )
+        })
+        .addCase(deleteCoord.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
         })
     }
 })

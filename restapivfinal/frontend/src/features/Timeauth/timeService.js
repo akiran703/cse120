@@ -16,6 +16,19 @@ const createTime = async (timeData,token) => {
     return response.data
 }
 
+//get time
+const getTime = async (token) => {
+  const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  const response = await axios.get(API_URL,config)
+
+  return response.data
+}
+
+
 
 //update time
 const updateTimeToNew = async(id,timeData,token) => {
@@ -30,9 +43,23 @@ const updateTimeToNew = async(id,timeData,token) => {
 }
 
 
+//delete coordinate
+const deleteTimee = async(id,token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+    const response = await axios.delete(API_URL+id,config)
+    return response.data
+}
+
+
 const timeService = {
     createTime,
     updateTimeToNew,
+    getTime,
+    deleteTimee,
 
 }
 export default timeService

@@ -1,19 +1,19 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit"
-import timeService from './timeService'
+import listService from "./listService"
 
 const initialState = {
-    time: [],
+    lists: [],
     isError:false,
     isSuccess:false,
     isLoading:false,
     message:''
-
 }
-//create new time info
-export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI) => {
+
+// create list
+export const createList = createAsyncThunk('list/create',async(listData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.createTime(timeData,token)
+        return await listService.createList(listData,token)
     }
     catch(error)
     {
@@ -28,11 +28,11 @@ export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI
     }
 })
 
-//get coordinates
-export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
+// update list
+export const updateList = createAsyncThunk('list/update',async(id,listData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.getTime(token)
+        return await listService.updateList(id,listData,token)    
     }
     catch(error)
     {
@@ -47,12 +47,11 @@ export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
     }
 })
 
-
-//update old time
-export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,thunkAPI) => {
+// get list
+export const getLists = createAsyncThunk('list/get',async(_,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.updateTimeToNew(id,timeData,token)
+        return await listService.getLists(token)
     }
     catch(error)
     {
@@ -67,91 +66,89 @@ export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,th
     }
 })
 
-
-//delete time 
-export const deleteTime = createAsyncThunk('time/delete',async(id,thunkAPI) => {
-    try{
+// delete list
+export const deleteList = createAsyncThunk(
+    'list/delete',
+    async (id, thunkAPI) => {
+      try {
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.deleteTimee(id,token)
-    }
-    catch(error)
-    {
+        return await listService.deleteList(id, token)
+      } catch (error) {
         const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString()
+        return thunkAPI.rejectWithValue(message)
+      }
     }
-})
+  )
 
-
-
-export const timeSlice = createSlice({
-    name: 'time',
+export const listSlice = createSlice({
+    name: 'list',
     initialState,
     reducers:{
         reset:(state) => initialState
     },
     extraReducers:(Builder) =>{
         Builder
-        .addCase(createTime.pending,(state)=>{
+        .addCase(createList.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(createTime.fulfilled,(state,action)=>{
+        .addCase(createList.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time.push(action.payload)
+            state.lists.push(action.payload)
         })
-        .addCase(createTime.rejected,(state,action)=>{
+        .addCase(createList.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message(action.payload)
         })
-        .addCase(updatetheTime.pending,(state)=>{
+        .addCase(updateList.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(updatetheTime.fulfilled,(state,action)=>{
+        .addCase(updateList.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload.id
+            state.lists.push(action.payload)
         })
-        .addCase(updatetheTime.rejected,(state,action)=>{
+        .addCase(updateList.rejected,(state,action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message(action.payload)
+        })
+        .addCase(getLists.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(getLists.fulfilled,(state,action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.lists = action.payload
+        })
+        .addCase(getLists.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(getTime.pending,(state)=>{
+        .addCase(deleteList.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getTime.fulfilled,(state,action)=>{
+        .addCase(deleteList.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload
+            state.lists = state.lists.filter(
+                (list) => list._id !== action.payload.id
+        )
         })
-        .addCase(getTime.rejected,(state,action)=>{
+        .addCase(deleteList.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(deleteTime.pending, (state) => {
-            state.isLoading = true
-            })
-        .addCase(deleteTime.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.isSuccess = true
-            state.time = state.time.filter(
-              (time) => time._id !== action.payload.id
-            )
-            })
-        .addCase(deleteTime.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload
-            })
     }
 })
-export const {reset} = timeSlice.actions
-export default timeSlice.reducer
+
+export const {reset} = listSlice.actions
+export default listSlice.reducer

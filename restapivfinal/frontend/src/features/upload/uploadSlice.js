@@ -1,19 +1,19 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit"
-import timeService from './timeService'
+import uploadService from "./uploadService"
 
 const initialState = {
-    time: [],
+    uploads: [],
     isError:false,
     isSuccess:false,
     isLoading:false,
     message:''
-
 }
-//create new time info
-export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI) => {
+
+// create BOL upload
+export const createUpload = createAsyncThunk('upload/create',async(uploadData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.createTime(timeData,token)
+        return await uploadService.createUpload(uploadData,token)
     }
     catch(error)
     {
@@ -28,11 +28,11 @@ export const createTime = createAsyncThunk('time/create',async(timeData,thunkAPI
     }
 })
 
-//get coordinates
-export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
+// update BOL upload
+export const updateUpload = createAsyncThunk('upload/update',async(id,uploadData,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.getTime(token)
+        return await uploadService.updateUpload(id,uploadData,token)    
     }
     catch(error)
     {
@@ -47,12 +47,11 @@ export const getTime = createAsyncThunk('time/get',async(_,thunkAPI) => {
     }
 })
 
-
-//update old time
-export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,thunkAPI) => {
+// get BOL upload
+export const getUploads = createAsyncThunk('upload/get',async(_,thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.updateTimeToNew(id,timeData,token)
+        return await uploadService.getUploads(token)
     }
     catch(error)
     {
@@ -67,91 +66,89 @@ export const updatetheTime = createAsyncThunk('time/update',async(id,timeData,th
     }
 })
 
-
-//delete time 
-export const deleteTime = createAsyncThunk('time/delete',async(id,thunkAPI) => {
-    try{
+// delete BOL upload
+export const deleteUpload = createAsyncThunk(
+    'upload/delete',
+    async (id, thunkAPI) => {
+      try {
         const token = thunkAPI.getState().auth.user.token
-        return await timeService.deleteTimee(id,token)
-    }
-    catch(error)
-    {
+        return await uploadService.deleteUpload(id, token)
+      } catch (error) {
         const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString()
+        return thunkAPI.rejectWithValue(message)
+      }
     }
-})
+  )
 
-
-
-export const timeSlice = createSlice({
-    name: 'time',
+export const uploadSlice = createSlice({
+    name: 'upload',
     initialState,
     reducers:{
         reset:(state) => initialState
     },
     extraReducers:(Builder) =>{
         Builder
-        .addCase(createTime.pending,(state)=>{
+        .addCase(createUpload.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(createTime.fulfilled,(state,action)=>{
+        .addCase(createUpload.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time.push(action.payload)
+            state.uploads.push(action.payload)
         })
-        .addCase(createTime.rejected,(state,action)=>{
+        .addCase(createUpload.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message(action.payload)
         })
-        .addCase(updatetheTime.pending,(state)=>{
+        .addCase(updateUpload.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(updatetheTime.fulfilled,(state,action)=>{
+        .addCase(updateUpload.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload.id
+            state.uploads.push(action.payload)
         })
-        .addCase(updatetheTime.rejected,(state,action)=>{
+        .addCase(updateUpload.rejected,(state,action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message(action.payload)
+        })
+        .addCase(getUploads.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(getUploads.fulfilled,(state,action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.uploads = action.payload
+        })
+        .addCase(getUploads.rejected,(state,action)=>{
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(getTime.pending,(state)=>{
+        .addCase(deleteUpload.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getTime.fulfilled,(state,action)=>{
+        .addCase(deleteUpload.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.time = action.payload
+            state.uploads = state.uploads.filter(
+                (upload) => upload._id !== action.payload.id
+        )
         })
-        .addCase(getTime.rejected,(state,action)=>{
+        .addCase(deleteUpload.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(deleteTime.pending, (state) => {
-            state.isLoading = true
-            })
-        .addCase(deleteTime.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.isSuccess = true
-            state.time = state.time.filter(
-              (time) => time._id !== action.payload.id
-            )
-            })
-        .addCase(deleteTime.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload
-            })
     }
 })
-export const {reset} = timeSlice.actions
-export default timeSlice.reducer
+
+export const {reset} = uploadSlice.actions
+export default uploadSlice.reducer

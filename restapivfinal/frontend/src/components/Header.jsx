@@ -16,9 +16,6 @@ function Header() {
   
   return (
    <header>
-       <div>
-           <Link to='/'> location setting </Link>
-       </div>
        <ul>
         {user ? (
           <li>
