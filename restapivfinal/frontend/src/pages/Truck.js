@@ -8,6 +8,7 @@ import DriverDetails from '../checkIn/DriverDetails'
 import UploadItem from '../checkIn/UploadItem';
 import ListItem from '../checkIn/ListItem';
 import GenQR from '../checkIn/GenQR';
+import Outbound from '../checkIn/Outbound';
 
 function Truck() {
   return (
@@ -21,7 +22,7 @@ function Truck() {
           <Route exact path="/details/image" element={<UploadItem />} />
           <Route exact path="/details/listOfPO" element={<ListItem />} />
           <Route exact path="/genQR" element={<GenQR />} />
-
+          <Route exact path="/outbound" element={<Outbound />} />
         </Routes>
  
 

@@ -69,7 +69,7 @@ function DetailsForm() {
             fullName, licenseNo, phoneNo, plateNo, apptNo, startLoc, typeOfTruck
         }
         if (input.typeOfTruck==='Outbound') {
-            navigate("/truck/genQR");
+            navigate("/truck/outbound");
         }  else {
             navigate("/truck/po");
         }  

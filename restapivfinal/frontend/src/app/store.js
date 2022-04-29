@@ -7,6 +7,7 @@ import uploadReduce from '../features/upload/uploadSlice'
 import listReducer from '../features/list/listSlice'
 import alltimeReducer from '../features/alltimeAuth/allSlice'
 
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     driver: driverReducer,
     list: listReducer,
     upload: uploadReduce,
-    alltime:alltimeReducer
+    alltime:alltimeReducer,
+
   },
 });

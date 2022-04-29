@@ -1,0 +1,79 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: rgb(43, 69, 141);
+    color: #fff;
+   }
+
+
+.LogoutNav {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: rgb(43, 69, 141);
+    color: #fff;
+    padding: 0px 0px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;
+    position: relative;
+    width: 60px;
+    height: 25px;
+    left: -15px;
+  }
+
+.LogoutNav:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+
+
+.flex-parent {
+    display: flex;
+  }
+  
+  .jc-center {
+    justify-content: center;
+  }
+  
+  button.margin-right {
+    margin-right: 20px;
+  }
+
+.LoginNav {
+    width: 100%;
+    border: none;
+    background-color: rgb(43, 69, 141);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline;
+    left: 0px;
+  }
+
+.LoginNav:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+
+.RegisterNav {
+    width: 100%;
+    border: none;
+    background-color: rgb(43, 69, 141);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    left: 5px;
+}
+
+.RegisterNav:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+

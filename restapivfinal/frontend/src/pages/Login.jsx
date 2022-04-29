@@ -4,6 +4,7 @@ import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import {login,reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import '../pages/Login.css'
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -25,6 +26,9 @@ function Login() {
           }
       
           if (isSuccess || user) {
+            if(String(user._id) !== '6259b5090949950f79bc7a9f'){
+              navigate('/truck')
+            }
             navigate('/truck')
           }
       
@@ -59,50 +63,30 @@ function Login() {
 
 
   return (
-    <>
-    <section>
-        <h1>
+    <div>
+          <form onSubmit={onSubmit}>
+              <h3>Please Sign In</h3>
+              <label htmlFor="email" className="sr-only"> </label>
+              <input type="email" 
+                     name="email" 
+                     onChange={onChange} 
+                     className="form-control" 
+                     placeholder="Enter Email"/>
+                    <p>
+                    </p>
+              <label htmlFor="password" className="sr-only"> </label>
+              <input type="password" 
+                     name="password" 
+                     onChange={onChange} 
+                     className="form-control" 
+                     placeholder="Enter Password"/>
+                    <p>
+                    </p>
 
-        </h1>
-        <p>
-            Login
-        </p>
-    </section>
-
-    <section>
-        <form onSubmit={onSubmit}>
-        <div>
-        <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Enter your email'
-              onChange={onChange}
-            />
-        </div>
-        <div>
-        <input
-              type='password'
-              className='form-control'
-              id='password'
-              name='password'
-              value={password}
-              placeholder='Enter password'
-              onChange={onChange}
-            />
-        </div>
-       
-        <div>
-        <button type='submit' className='btn btn-block'>
-              Submit
-            </button>
-        </div>
-
-        </form>
-    </section>
-    </>
+              <button variant="contained" className="block" 
+                      type="submit">Log In </button>
+          </form>
+      </div>
   )
 }
 

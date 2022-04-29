@@ -7,8 +7,6 @@ import {ToastContainer} from 'react-toastify'
 import Truck from './pages/Truck';
 
 
-
-
 function App() {
   return (
     <>
@@ -16,7 +14,6 @@ function App() {
     <div >
       <Header/>
       <Routes>
-        {/* <Route path='/' element={ <Coordinates/>}  /> */}
         <Route path='/login' element={ <Login/>}  />
         <Route path='/register' element={ <Register/>}  />
         <Route exact path="/truck/*" element={<Truck />} />

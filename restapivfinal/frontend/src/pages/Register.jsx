@@ -4,6 +4,7 @@ import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import {register,reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import '../pages/Register.css'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -20,7 +21,10 @@ function Register() {
     const { user, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.auth
       )
-
+    
+    const confirming = () => {
+        window.location.assign("http://localhost:3000/truck");
+    }
 
     useEffect(() => {
         if (isError) {
@@ -28,7 +32,7 @@ function Register() {
         }
     
         if (isSuccess || user) {
-          navigate('/')
+          navigate('/truck')
         }
     
         dispatch(reset())
@@ -69,16 +73,16 @@ function Register() {
         <h1>
 
         </h1>
-        <p>
-            please create an account
-        </p>
+        <h3>
+            Please Register Your Account
+        </h3>
     </section>
 
     <section>
         <form onSubmit={onSubmit}>
         <div>
         <input
-              type='text'
+              type='Regname'
               className='form-control'
               id='name'
               name='name'
@@ -87,9 +91,11 @@ function Register() {
               onChange={onChange}
             />
         </div>
+        <p>
+        </p>
         <div>
         <input
-              type='email'
+              type='Regemail'
               className='form-control'
               id='email'
               name='email'
@@ -98,9 +104,11 @@ function Register() {
               onChange={onChange}
             />
         </div>
+        <p>
+        </p>
         <div>
         <input
-              type='password'
+              type='Regpassword'
               className='form-control'
               id='password'
               name='password'
@@ -109,9 +117,11 @@ function Register() {
               onChange={onChange}
             />
         </div>
+        <p>
+        </p>
         <div>
         <input
-              type='password'
+              type='Reenterpassword'
               className='form-control'
               id='password2'
               name='password2'
@@ -120,10 +130,11 @@ function Register() {
               onChange={onChange}
             />
         </div>
+        <p>
+        </p>
         <div>
-        <button type='submit' className='btn btn-block'>
-              Submit
-            </button>
+        <button className='block' onClick = {confirming}
+                type='submit'>Register</button>
         </div>
 
         </form>

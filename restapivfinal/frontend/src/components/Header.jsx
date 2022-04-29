@@ -1,6 +1,7 @@
 import {Link,useNavigate} from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import {logout,reset} from '../features/auth/authSlice'
+import '../components/Header.css'
 
 
 function Header() {
@@ -16,28 +17,29 @@ function Header() {
   
   return (
    <header>
-       <ul>
-        {user ? (
-          <li>
-            <button className='btn' onClick={onLogout}>
-            Logout
-            </button>
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link to='/login'>
-                login
-              </Link>
-            </li>
-            <li>
-              <Link to='/register'>
-                register
-              </Link>
-            </li>
+       <nav class="navbar">
+      <h1> US Cold Storage </h1>
+         {user ? (
+             <button className='LogoutNav' onClick={onLogout}>
+                 Logout
+             </button>
+         ) : (
+           <>
+           <div class="flex-parent jc-center">
+            <Link to="/login">
+               <button className="LoginNav">
+                   Login
+               </button> 
+             </Link>
+               <Link to='/register'>
+                 <button className = "RegisterNav">
+                   Register
+                 </button>
+               </Link>
+             </div>
           </>
         )}
-      </ul>
+      </nav>
    </header>
   )
 }

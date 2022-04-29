@@ -1,0 +1,40 @@
+input[type="email"]
+{
+    display: block;
+    width: 100%;
+    border: 1px solid rgb(88, 90, 88);
+    background-color: #ffffff;
+    padding: 14px 1px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+}
+input[type="password"]
+{
+    display: block;
+    width: 100%;
+    border: 1px solid rgb(88, 90, 88);
+    background-color: #ffffff;
+    padding: 14px 1px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+}
+.block {
+    display: block;
+    width: 100%;
+    border: 1px solid rgb(88, 90, 88);
+    background-color: rgb(43, 69, 141);
+    padding: 14px 28px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+  }
+
+.block:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}

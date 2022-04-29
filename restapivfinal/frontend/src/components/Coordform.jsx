@@ -8,8 +8,7 @@ import { deleteCoord } from '../features/coord/coordSlice'
 import { updatetheTime } from '../features/Timeauth/timeSlice'
 import { updateCoord } from '../features/coord/coordSlice'
 import { useGeolocation } from "rooks";
-import Time from './Time';
-import { Promise } from 'mongoose';
+import '../components/Coordform.css'
 import { Button, Grid} from '@material-ui/core';
 import { reset } from '../features/coord/coordSlice'
 import { getTime } from '../features/Timeauth/timeSlice'
@@ -40,6 +39,8 @@ function Coordform() {
     (state) => state.time
   )
 
+ 
+
   const { locations } = useSelector(
     (state) => state.coord
   )
@@ -61,7 +62,12 @@ function Coordform() {
     }
   }, [user, navigate,isError,message,dispatch])
 
- 
+  const confirming = () => {
+    if (window.confirm("Continue if you have any more packages to pickup otherwise Cancel and Logout")) 
+    {
+      window.location.assign("http://localhost:3000/truck");
+    }
+  }
 
   const geoObj = useGeolocation({
     when,
@@ -74,7 +80,7 @@ function Coordform() {
         onClick={() => {
           if(geoObj != null)
           {
-            console.log(alltimes[0])
+            
             const templng = geoObj.lng
             const templat = geoObj.lat
             const value = locations.length
@@ -95,21 +101,28 @@ function Coordform() {
         
             const service = new google.maps.DistanceMatrixService();
             const geocoder = new google.maps.Geocoder();
+            var date = new Date();
             // build request
             const origin1 = { lat: templat, lng: templng };
             const origin2 = "Current, Location";
             const destinationA = "Turlock, US";
             const destinationB = { lat: 39.9467655, lng: -75.1312118 };
+            date.setDate(date.getDate() + 1);
             const request = {
               origins: [origin1, origin2],
               destinations: [destinationA, destinationB],
               travelMode: google.maps.TravelMode.DRIVING,
+              drivingOptions: {
+                departureTime: date,
+                trafficModel: 'pessimistic'
+              },
               unitSystem: google.maps.UnitSystem.METRIC,
               avoidHighways: false,
               avoidTolls: false,
             };
             service.getDistanceMatrix(request).then((response) => {
               // put response
+              console.log(response)
               const temp1 = response.rows[0].elements[0].duration
               if(valuetwo == 0)
               {
@@ -147,7 +160,9 @@ function Coordform() {
         </p>}
       </div>
 
-
+      <Button variant="contained" href="#contained-buttons" className='btn' onClick={confirming}>
+            Checkout
+      </Button>
 
     </div>
   );
