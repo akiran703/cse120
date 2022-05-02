@@ -1,0 +1,77 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: rgb(43, 69, 141);
+  color: #fff;
+ }
+
+
+.LogoutNav {
+background-color: #060b26;
+color: #fff;
+width: 78px;
+height: 3vh;
+display: flex;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+justify-content: center;
+position: fixed;
+top: 40px;
+right: 30px;
+padding: 0;
+border: none;
+}
+
+.LogoutNav:active {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+
+.LoginNav {
+background-color: #060b26;
+color: #fff;
+width: 65px;
+height: 3vh;
+display: flex;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+justify-content: center;
+position: fixed;
+top: 40px;
+right: 110px;
+padding: 0;
+border: none;
+}
+
+.LoginNav:active {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+
+.RegisterNav {
+background-color: #060b26;
+color: #fff;
+width: 78px;
+height: 3vh;
+display: flex;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+justify-content: center;
+position: fixed;
+top: 40px;
+right: 30px;
+padding: 0;
+border: none;
+}
+
+.RegisterNav:active {
+transform: scale(0.98);
+box-shadow: 3px 2px 22px 1px rgba(201, 202, 223, 0.938);
+}
+
+
