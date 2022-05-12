@@ -40,7 +40,7 @@ for (let i = 0; i < alldrivers.length; i++)
 }
 
   useEffect(() => {
-    if(String(user._id) !== '6259b5090949950f79bc7a9f'){
+    if(String(user._id) !== 'place new object id of admin here '){
       navigate('/truck')
     }
     dispatch(getalltimesplease())
