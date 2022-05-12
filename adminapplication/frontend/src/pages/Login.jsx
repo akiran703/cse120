@@ -28,7 +28,7 @@ function Login() {
           }
       
           if (isSuccess || user) {
-            if(String(user._id) !== '6259b5090949950f79bc7a9f'){
+            if(String(user._id) !== 'place the new admin id here'){
               navigate('/truck')
             }
             navigate('/Admin')
