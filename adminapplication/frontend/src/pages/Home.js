@@ -40,7 +40,7 @@ const Home = () => {
 
   //verifies that an admin is accessing the dashboard
   useEffect(() => {
-    if(String(user._id) !== '6259b5090949950f79bc7a9f'){
+    if(String(user._id) !== 'Place the new id here'){
       navigate('/truck')
     }
     
